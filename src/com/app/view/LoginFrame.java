@@ -125,27 +125,26 @@ public class LoginFrame extends JFrame {
             String pass = new String(txtPassword.getPassword());
 
             if (email.isEmpty() || pass.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập tài khoản và mật khẩu!");
                 return;
             }
 
-            // Giả lập các tài khoản theo vai trò (Sau này sẽ kết nối Database Oracle)
-            // Cấu trúc: TenDangNhap | MatKhau -> VaiTro
+            // Giả lập 5 VaiTro (Role) khớp với sơ đồ thực thể
             String role = "";
-            if (email.equals("admin") && pass.equals("123")) role = "ADMIN";
-            else if (email.equals("doanhnghiep") && pass.equals("123")) role = "DOANH_NGHIEP";
-            else if (email.equals("nhanvien") && pass.equals("123")) role = "NHAN_VIEN";
-            else if (email.equals("chuxe") && pass.equals("123")) role = "CHU_XE";
-            else if (email.equals("khachhang") && pass.equals("123")) role = "KHACH_HANG";
+            if (email.equals("admin")) role = "ADMIN";
+            else if (email.equals("dn_quanly")) role = "DOANH_NGHIEP"; // Quản lý DOANHNGHIEPQUANLI
+            else if (email.equals("nv_01")) role = "NHAN_VIEN";         // Quản lý NHANVIEN
+            else if (email.equals("chuxe_01")) role = "CHU_XE";         // Quản lý CHUXE
+            else if (email.equals("kh_01")) role = "KHACH_HANG";       // Quản lý KHACHHANG
 
             if (!role.equals("")) {
-                JOptionPane.showMessageDialog(this, "Đăng nhập thành công với vai trò: " + role);
                 this.dispose();
-                new MainDashboard(role).setVisible(true); // Mở Dashboard với vai trò tương ứng
+                // Mở Dashboard truyền đúng VaiTro để phân quyền menu
+                new MainDashboard(role).setVisible(true); 
             } else {
-                JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Sai thông tin đăng nhập!");
             }
-        });;
+        });
     }
 
     private JLabel createLeftLabel(String text) {
