@@ -119,10 +119,33 @@ public class LoginFrame extends JFrame {
             new ForgotPasswordFrame().setVisible(true);
         });
         
+        // --- XỬ LÝ SỰ KIỆN ĐĂNG NHẬP ---
         btnLogin.addActionListener(e -> {
-            // Chỗ này để code kiểm tra đăng nhập sau
-            JOptionPane.showMessageDialog(this, "Đang kết nối Database...");
-        });
+            String email = txtEmail.getText();
+            String pass = new String(txtPassword.getPassword());
+
+            if (email.isEmpty() || pass.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Giả lập các tài khoản theo vai trò (Sau này sẽ kết nối Database Oracle)
+            // Cấu trúc: TenDangNhap | MatKhau -> VaiTro
+            String role = "";
+            if (email.equals("admin") && pass.equals("123")) role = "ADMIN";
+            else if (email.equals("doanhnghiep") && pass.equals("123")) role = "DOANH_NGHIEP";
+            else if (email.equals("nhanvien") && pass.equals("123")) role = "NHAN_VIEN";
+            else if (email.equals("chuxe") && pass.equals("123")) role = "CHU_XE";
+            else if (email.equals("khachhang") && pass.equals("123")) role = "KHACH_HANG";
+
+            if (!role.equals("")) {
+                JOptionPane.showMessageDialog(this, "Đăng nhập thành công với vai trò: " + role);
+                this.dispose();
+                new MainDashboard(role).setVisible(true); // Mở Dashboard với vai trò tương ứng
+            } else {
+                JOptionPane.showMessageDialog(this, "Sai tài khoản hoặc mật khẩu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        });;
     }
 
     private JLabel createLeftLabel(String text) {
